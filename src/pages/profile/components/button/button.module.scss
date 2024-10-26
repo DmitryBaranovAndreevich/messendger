@@ -1,0 +1,16 @@
+@import "../../../../styles/index";
+
+.button {
+  font:
+    500 13px/13px "Inter",
+    sans-serif;
+  color: $colorPrimary;
+  border: none;
+  background: transparent;
+  align-self: flex-start;
+
+  &:hover {
+    cursor: pointer;
+    opacity: $buttonsSelectOpacity;
+  }
+}
