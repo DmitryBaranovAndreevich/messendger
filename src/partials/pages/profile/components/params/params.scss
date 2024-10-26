@@ -1,0 +1,21 @@
+.paramsRow {
+  width: 100%;
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid $lightColorDisable;
+  justify-content: space-between;
+  align-items: center;
+  list-style-type: none;
+
+  &__input {
+    border: none;
+    color: $colorDisable;
+    text-align: right;
+    outline: none;
+    background-color: transparent;
+  }
+
+  &:last-of-type {
+    border: none;
+  }
+}

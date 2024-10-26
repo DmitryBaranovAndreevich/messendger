@@ -1,0 +1,19 @@
+.flexContainer {
+  display: flex;
+
+  &_direction-column {
+    flex-direction: column;
+  }
+
+  &_justify-center {
+    justify-content: center;
+  }
+
+  &_justify-spaceAround {
+    justify-content: space-around;
+  }
+
+  &_alignItems-center {
+    align-items: center;
+  }
+}

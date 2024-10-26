@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{#> head title="main"}}
+  <link rel="icon" href="./src/assets/favicon.svg" />
+  {{/head}}
+  <body>
+    <main>
+      <div id="root"></div>
+    </main>
+  </body>
+  <script id="entry-template" type="text/x-handlebars-template">
+    <nav>
+      <ul class="menu">
+        <li class="menu__item">
+          <a href="./src/pages/500/500.html">500</a>
+        </li>
+        <li class="menu__item">
+          <a href="./src/pages/400/400.html">404</a>
+        </li>
+        <li class="menu__item">
+          <a href="./src/pages/login/login.html">login</a>
+        </li>
+        <li class="menu__item">
+          <a href="./src/pages/register/register.html">register</a>
+        </li>
+        <li class="menu__item">
+          <a href="./src/pages/profile/profile.html">profile</a>
+        </li>
+        <li class="menu__item">
+          <a href="./src/pages/chats/chats.html">chats</a>
+        </li>
+      </ul>
+    </nav>
+  </script>
+  <script type="module" src="./src/pages/main/main.ts"></script>
+</html>

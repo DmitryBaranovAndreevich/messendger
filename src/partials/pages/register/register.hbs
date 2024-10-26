@@ -1,0 +1,24 @@
+{{#> center-page-template}}
+  {{#> flex flexDirection="column" alignItems="center" className="registerPage"}}
+    {{#> typography size="middle"}}
+        Регистрация
+    {{/typography}}
+    <form class="registerPage__formWrapper" name="registerForm">
+      {{#> flex flexDirection="column" alignItems="center" className="registerPage__form"}}
+        {{> inputWithItem item="Почта" name="email" type="text" error="Заполните поле"}}
+        {{> inputWithItem item="Логин" name="login" type="text" error="Заполните поле"}}
+        {{> inputWithItem item="Имя" name="first_name" type="text" error="Заполните поле"}}
+        {{> inputWithItem item="Фамилия" name="second_name" type="text" error="Заполните поле"}}
+        {{> inputWithItem item="Телефон" name="phone" type="text" error="Заполните поле"}}
+        {{> inputWithItem item="Пароль" name="password" type="password" error="Заполните поле"}}
+        {{> inputWithItem item="Пароль (ещё раз)" name="password-copy" type="password" error="Пароли не совпадают"}}
+        {{#> button type="submit" className="registerPage__submitButton"}}
+          Авторизоваться
+        {{/button}}
+      {{/flex }}
+    </form>
+    {{#> link url="../register/register.html" className="registerPage__link"}}
+      Нет аккаунта?
+    {{/link}}
+  {{/flex }}
+{{/center-page-template}}

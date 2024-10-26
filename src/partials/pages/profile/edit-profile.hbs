@@ -1,0 +1,11 @@
+{{#> center-page-template}}
+  {{#> flex flexDirection="column" alignItems="center" className="profilePage"}}
+    {{> img-loader}}
+    <form class="profilePage__form">
+      <ul class="profilePage__userParamsContainer"></ul>
+      {{#> button className="profilePage__saveButton" type="submit"}}
+        Сохранить
+      {{/button}}
+    </form>
+  {{/flex }}
+{{/center-page-template}}
