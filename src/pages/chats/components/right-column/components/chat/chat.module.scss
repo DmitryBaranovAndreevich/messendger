@@ -1,0 +1,39 @@
+@import "../../../../../../styles/index";
+
+.chats {
+  width: 100%;
+  height: calc(100vh - 150px);
+  overflow: auto;
+  list-style-type: none;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  padding: 0;
+
+  &__container {
+    display: flex;
+    font: 500 11px/11px "Inter", sans-serif;
+  }
+
+  &__mes {
+    max-width: 400px;
+    padding: 11px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+
+  &__ownerMes {
+    background: #e4edfd;
+    margin: 0 0 0 auto;
+    border-bottom-right-radius: 0;
+  }
+
+  &__anotherMes {
+    background: $lightColorDisable;
+  }
+
+  &__time {
+    font: 600 6px/6px "Inter", sans-serif;
+    margin: 5px 0;
+  }
+}

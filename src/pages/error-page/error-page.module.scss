@@ -1,0 +1,28 @@
+@import "../../styles/index";
+
+.errorPage {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  &__title {
+    margin: 0;
+    font:
+      500 40px/40px "Inter",
+      sans-serif;
+  }
+
+  &__content {
+    margin: 0;
+    font:
+      500 20px/20px "Inter",
+      sans-serif;
+  }
+
+  &__link {
+    margin-top: 25px;
+  }
+}

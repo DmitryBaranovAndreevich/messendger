@@ -1,0 +1,17 @@
+@import "../../../../styles/index";
+
+.leftColumn {
+  width: 100%;
+  height: calc(100vh - 40px);
+  overflow: hidden;
+  max-width: 300px;
+  border-right: 1px solid $lightColorDisable;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  background: $lightBackground;
+
+  &__link {
+    text-align: end;
+  }
+}

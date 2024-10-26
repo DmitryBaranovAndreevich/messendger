@@ -1,0 +1,15 @@
+@import "../../styles/index";
+
+.button {
+  width: 100%;
+  background-color: $colorPrimary;
+  border: none;
+  padding: 12px 0;
+  color: $textColorLight;
+  border-radius: 8px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: $buttonsSelectOpacity;
+  }
+}
