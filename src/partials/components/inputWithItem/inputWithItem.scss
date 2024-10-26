@@ -1,0 +1,53 @@
+.inputWithItem {
+  width: 100%;
+  vertical-align: top;
+  position: relative;
+  box-sizing: border-box;
+
+  &__item {
+    color: $colorDisable;
+    font: 500 9px/9px "Inter";
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    right: 15px;
+    top: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 40px;
+    transition: 0.3s;
+  }
+
+  &__input {
+    border: none;
+    border-bottom: 1px solid $colorPrimary;
+    width: 100%;
+    padding: 7px 0;
+    outline: none;
+    box-sizing: border-box;
+
+    &_isError {
+      color: $colorError;
+    }
+  }
+
+  &__input:focus ~ &__item,
+  &__input:not(:focus):valid ~ &__item {
+    top: -20px;
+    font-size: 10px;
+  }
+
+  &__error {
+    color: $colorError;
+    font: 500 9px/9px "Inter";
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    bottom: -15px;
+    display: none;
+
+    &_visible {
+      display: block;
+    }
+  }
+}

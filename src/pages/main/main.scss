@@ -1,0 +1,9 @@
+@import "../../partials/partials.scss";
+
+.menu {
+  padding-left: 0;
+
+  &__item {
+    list-style-type: none;
+  }
+}

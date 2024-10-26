@@ -1,0 +1,24 @@
+.center-page-template {
+  display: flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+
+  &__root {
+    position: relative;
+    margin: auto;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  &__title {
+    color: #f2f2f3;
+    font-size: 24px;
+    margin: 0;
+  }
+}

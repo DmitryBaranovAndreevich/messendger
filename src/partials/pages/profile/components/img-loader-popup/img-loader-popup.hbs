@@ -1,0 +1,14 @@
+{{#> center-page-template className="img-load-popup"}}
+  {{#> flex flexDirection="column" alignItems="center" className="img-load-popup__container"}}
+    {{#> typography size="middleSmall"}}
+      Загрузите файл
+    {{/typography}}
+    <form class="img-load-popup__form">
+      <label class="img-load-popup__inputLabel" for="img-load-popup__input">Выбрать файл на компьютере</label>
+      <input id="img-load-popup__input" name="photo" type="file" />
+      {{#> button className="profilePage__saveButton" type="submit"}}
+        Поменять
+      {{/button}}
+    </form>
+  {{/flex }}
+{{/center-page-template}}

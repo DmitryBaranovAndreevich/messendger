@@ -1,0 +1,50 @@
+.upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: 20px;
+  background: $lightColorDisable;
+
+  &__img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    user-select: none;
+  }
+
+  &__changeAvatarButton {
+    border-radius: 50%;
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    border: none;
+    color: $textColorLight;
+    font: 500 13px/14px "Inter";
+
+    &:hover {
+      cursor: pointer;
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+#upload-container__input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  position: absolute;
+  z-index: -10;
+}

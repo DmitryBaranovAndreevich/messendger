@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ru">
+  {{#> head title="500 error"}}
+  <link rel="icon" href="../../icons/favicon.svg" />
+  {{/head}}
+  <body>
+    <main>
+      <div id="root"></div>
+    </main>
+  </body>
+  <script id="entry-template" type="text/x-handlebars-template">
+    {{> 500}}
+  </script>
+  <script type="module" src="./500.ts"></script>
+</html>
