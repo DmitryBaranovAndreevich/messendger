@@ -9,4 +9,4 @@ export enum Etag {
   LINK = "a",
 }
 
-export type TProps<T> =  T extends unknown ? T : never
+export type TProps<T> = T extends unknown ? T : never;
