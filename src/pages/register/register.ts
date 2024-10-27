@@ -1,20 +1,25 @@
-import { addTemplate } from "../../utils";
-import "./register.scss";
+import { Block, TPropsObj } from "../../modules";
+import styles from "./register.module.scss";
+import { TRegisterTemplate } from "./register-types";
 
-const root = document.querySelector<HTMLDivElement>("#root");
-addTemplate("#entry-template", root);
-
-const elements = document.querySelector<HTMLFormElement>(
-  ".registerPage__formWrapper"
-)?.elements;
-if (elements) {
-  const lastInputPassword = Array.from(elements).find(
-    (el): el is HTMLInputElement => el.getAttribute("name") === "password-copy"
-  );
-  lastInputPassword?.setAttribute("value", "111111111");
-  lastInputPassword?.classList.add(`${lastInputPassword.className}_isError`);
-  const parent = lastInputPassword?.closest("div");
-  const errorClass = `${parent?.className}__error`;
-  const error = parent?.querySelector(`.${errorClass}`);
-  error?.classList.add(`${errorClass}_visible`);
+export class RegisterTemplate extends Block<TRegisterTemplate> {
+  constructor(props: TPropsObj<TRegisterTemplate>) {
+    super(props);
+  }
+  render() {
+    return `<div class="${styles.registerPage}">
+                <p class="${styles.registerPage__title}">Регистрация</p>
+                <form class="${styles.registerPage__formWrapper}" name="registerForm" novalidate>
+                  {{{email}}}
+                  {{{login}}}
+                  {{{first_name}}}
+                  {{{second_name}}}
+                  {{{phone}}}
+                  {{{password}}}
+                  {{{repeat_password}}}     
+                  {{{buttonSubmit}}}
+                </form>
+                {{{link}}}
+              </div>`;
+  }
 }

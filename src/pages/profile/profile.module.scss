@@ -1,0 +1,108 @@
+@import "../../styles/index";
+
+.profile {
+  width: 100%;
+  max-width: 510px;
+
+  &_dark {
+    background: $popupBackground;
+  }
+
+  &__img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    user-select: none;
+  }
+
+  &__imgLoader {
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    position: relative;
+    margin-bottom: 20px;
+    background: $lightColorDisable;
+  }
+
+  & &__changeAvatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    inset: 0;
+    opacity: 0;
+    border: none;
+    color: $textColorLight;
+    font:
+      500 13px/14px "Inter",
+      sans-serif;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 1;
+      background: rgba(0 0 0 / 50%);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    text-align: center;
+    font:
+      600 16px/16px "Inter",
+      sans-serif;
+  }
+
+  &__ {
+    margin: 0;
+  }
+
+  &__image {
+    width: 130px;
+    height: 130px;
+    overflow: hidden;
+  }
+
+  &__userParamsContainer {
+    width: 100%;
+    margin: 50px 0;
+    padding-left: 0;
+  }
+
+  &__link {
+    font:
+      500 13px/13px "Inter",
+      sans-serif;
+    color: $colorPrimary;
+    border: none;
+    background: transparent;
+    align-self: flex-start;
+
+    &:hover {
+      cursor: pointer;
+      opacity: $buttonsSelectOpacity;
+    }
+  }
+
+  &__splitter {
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid $lightColorDisable;
+  }
+
+  & &__exit {
+    color: $colorError;
+  }
+
+  &__form {
+    width: 100%;
+  }
+}
