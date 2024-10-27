@@ -18,7 +18,7 @@ export function addTemplate(
 
 
 export function validateUserName(name: string) {
-  return !/^[A-ZА-Я][a-zа-я-]*$/.test(name);
+  return !/^[A-ZА-ЯЁ][a-zа-яё-]*$/.test(name);
 }
 
 export function validateUserLogin(name: string) {
@@ -37,7 +37,7 @@ export function validateUserPassword(password: string) {
   if (password.length < 8 || password.length > 40) {
     return true;
   }
-  const isLetter = /[A-ZА-Я]+/.test(password);
+  const isLetter = /[A-ZА-ЯЁ]+/.test(password);
   const isNumber = /[0-9]+/.test(password);
   return !(isLetter && isNumber);
 }
