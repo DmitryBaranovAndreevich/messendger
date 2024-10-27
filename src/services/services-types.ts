@@ -1,19 +1,9 @@
 export interface IHTTPTransport {
   get: (url: string, options: TTypeTOptions) => Promise<XMLHttpRequest>;
   put: (url: string, options: TTypeTOptions) => Promise<XMLHttpRequest>;
-  post: (
-    url: string,
-    options: TTypeTOptions & { timeout?: number },
-  ) => Promise<XMLHttpRequest>;
-  delete: (
-    url: string,
-    options: TTypeTOptions & { timeout?: number },
-  ) => Promise<XMLHttpRequest>;
-  request: (
-    url: string,
-    options: TTypeTOptions & { timeout?: number },
-    time: number,
-  ) => Promise<XMLHttpRequest>;
+  post: (url: string, options: TTypeTOptions) => Promise<XMLHttpRequest>;
+  delete: (url: string, options: TTypeTOptions) => Promise<XMLHttpRequest>;
+  request: (url: string, options: TTypeTOptions) => Promise<XMLHttpRequest>;
 }
 
 export type TTypeTOptions = {
