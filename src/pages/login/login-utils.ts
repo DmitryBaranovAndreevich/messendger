@@ -57,14 +57,14 @@ export function createLoginPage() {
 
   const link = new Link({
     content: "Нет аккаунта?",
-    url: `${window.location.origin}/register`,
+    url: `${window.location.origin}/sign-up`,
     className: styles.loginPage__link,
     events: {
       click: (e: Event) => {
         e.preventDefault();
         const a = e.target as HTMLLinkElement;
-        history.pushState({}, "", a.href);
-        eventBusRouter.emit(ERouterEvents.URL_CHANGE);
+        const url = new URL(a.href);
+        eventBusRouter.emit(ERouterEvents.URL_CHANGE, url.pathname);
       },
     },
   });

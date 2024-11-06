@@ -28,14 +28,14 @@ export function createLeftColumn(
 
   const linkButton = new Link({
     content: "В профиль >",
-    url: `${window.location.origin}/profile`,
+    url: `${window.location.origin}/settings`,
     className: styles.leftColumn__link,
     events: {
       click: (e: Event) => {
         e.preventDefault();
         const a = e.target as HTMLLinkElement;
-        history.pushState({}, "", a.href);
-        eventBusRouter.emit(ERouterEvents.URL_CHANGE);
+        const url = new URL(a.href);
+        eventBusRouter.emit(ERouterEvents.URL_CHANGE, url.pathname);
       },
     },
   });

@@ -18,7 +18,7 @@ export function createProfile() {
         name: el.name,
         label: el.label,
         value: el.value,
-      })
+      }),
     );
 
     const htmlElements = params.reduce(
@@ -26,7 +26,7 @@ export function createProfile() {
         ...acc,
         [userParamsConfig[index].name]: el.component,
       }),
-      {} as Record<keyof TProfileTemplate, Params>
+      {} as Record<keyof TProfileTemplate, Params>,
     );
 
     const editProfileButton = new Button({
@@ -48,8 +48,8 @@ export function createProfile() {
       className: styles.profile__exit,
       events: {
         click: () => {
-          history.pushState({}, "", `${window.location.origin}/chats`);
-          eventBusRouter.emit(ERouterEvents.URL_CHANGE);
+          const url = new URL(`${window.location.origin}/messenger`);
+          eventBusRouter.emit(ERouterEvents.URL_CHANGE, url.pathname);
         },
       },
     });
