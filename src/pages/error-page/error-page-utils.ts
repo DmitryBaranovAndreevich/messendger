@@ -1,6 +1,6 @@
 import { Link } from "../../components";
 import { CenterPageLayout } from "../../layouts";
-import { ERouterEvents, eventBusRouter } from "../utils";
+import { ERouterEvents, eventBusRouter } from "../../utils";
 import { ErrorPageTemplate } from "./error-page";
 import styles from "./error-page.module.scss";
 

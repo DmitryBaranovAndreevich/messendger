@@ -21,8 +21,12 @@ export class Router {
     Router.__instance = this;
   }
 
-  use(pathname: string, block: () => Block<Record<string, TProps>>) {
-    const route = new Route(pathname, block, { root: this._rootQuery });
+  use(
+    pathname: string,
+    block: () => Block<Record<string, TProps>>,
+    RouteClass = Route,
+  ) {
+    const route = new RouteClass(pathname, block, { root: this._rootQuery });
     this.routes.push(route);
     return this;
   }
@@ -30,7 +34,6 @@ export class Router {
   start() {
     window.onpopstate = (event: PopStateEvent) => {
       if (event.currentTarget) {
-        console.log("r", (event.currentTarget as Window).location.pathname)
         this._onRoute((event.currentTarget as Window).location.pathname);
       }
     };
@@ -38,7 +41,12 @@ export class Router {
   }
 
   _onRoute(pathname: string) {
-    const route = this.getRoute(pathname);
+    let route = this.getRoute(pathname);
+
+    if (!route) {
+      this.history?.replaceState({}, "", "/400");
+      route = this.getRoute(pathname);
+    }
 
     if (this._currentRoute) {
       this._currentRoute.leave();

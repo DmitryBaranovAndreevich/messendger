@@ -1,11 +1,14 @@
 import { CenterPageLayout } from "../../layouts";
 import { getInputWithItem } from "../../components";
 import { Button, InputWithItem, Link } from "../../components";
-import { TLoginTemplate } from "./login-types";
+import { TLoginTemplate, TLoginUserRequest } from "./login-types";
 import { LoginTemplate } from "./login";
-import styles from "./login.module.scss";
-import { ERouterEvents, eventBusRouter } from "../utils";
+import { ERouterEvents, eventBusRouter, setCookie } from "../../utils";
 import { validateUserLogin, validateUserPassword } from "../../utils";
+import { LoginAPI } from "./login-api";
+import styles from "./login.module.scss";
+
+const loginAPIInstance = new LoginAPI();
 
 const LOGIN_INPUT_FIELDS = [
   {
@@ -74,7 +77,7 @@ export function createLoginPage() {
     buttonSubmit,
     link,
     events: {
-      submit: (e) => {
+      submit: async (e) => {
         e.preventDefault();
         inputs.forEach((input) => {
           input.validateInputValue();
@@ -86,9 +89,14 @@ export function createLoginPage() {
 
         const formValue = inputs.reduce(
           (acc, el) => ({ ...acc, [el.name]: el.state.value }),
-          {},
+          {} as TLoginUserRequest,
         );
-        console.log(formValue);
+
+        const response = await loginAPIInstance.request(formValue);
+        if (response.status === 200) {
+          setCookie("isLogin", "true", { expires: 1200 });
+          eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
+        }
       },
     },
   });

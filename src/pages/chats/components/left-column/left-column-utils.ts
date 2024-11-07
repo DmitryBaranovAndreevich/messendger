@@ -1,5 +1,5 @@
 import { Link } from "../../../../components";
-import { ERouterEvents, eventBusRouter } from "../../../utils";
+import { ERouterEvents, eventBusRouter } from "../../../../utils";
 import { ChatsTitle, Input } from "./components";
 import { LeftColumnTemplate } from "./left-column";
 import { TChatsData } from "./left-column-types";
