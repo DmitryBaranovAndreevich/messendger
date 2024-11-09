@@ -4,11 +4,11 @@ import { isEqual } from "./router-utils";
 export class Route {
   _pathname;
   _blockClass;
-  _block: Block<Record<string, TProps>> | null;
+  _block: Block<Record<string, TProps>> | null | undefined;
   _props;
   constructor(
     pathname: string,
-    view: () => Block<Record<string, TProps>>,
+    view: () => Promise<Block<Record<string, TProps>> | undefined>,
     props: TProps & { root: string },
   ) {
     this._pathname = pathname;
@@ -34,11 +34,13 @@ export class Route {
     return isEqual(pathname, this._pathname);
   }
 
-  render() {
+  async render() {
     if (!this._block) {
-      this._block = this._blockClass();
-      render(this._props.root, this._block);
-      return;
+      this._block = await this._blockClass();
+      if (this._block) {
+        render(this._props.root, this._block);
+        return;
+      }
     }
   }
 }

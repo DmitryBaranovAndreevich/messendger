@@ -6,11 +6,11 @@ import { Button, InputWithItem } from "../../components";
 import { RegisterTemplate } from "./register";
 import { RegisterAPI } from "./register-api";
 import styles from "./register.module.scss";
-import { ERouterEvents, eventBusRouter, setCookie } from "../../utils";
+import { ERouterEvents, eventBusRouter } from "../../utils";
 
 const registerAPI = new RegisterAPI();
 
-export function createRegister() {
+export async function createRegister() {
   const inputs = registerParamsConfig.map((el) =>
     getInputWithItem({
       type: el.type,
@@ -68,7 +68,7 @@ export function createRegister() {
 
         const response = await registerAPI.create(rest);
         if (response.status === 200) {
-          setCookie("isLogin", "true", { expires: 1200 });
+          localStorage.setItem("login", "true")
           eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
         }
       },

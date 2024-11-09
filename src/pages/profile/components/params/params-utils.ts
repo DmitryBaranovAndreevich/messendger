@@ -53,12 +53,20 @@ export function creteParams({
     }
 
     if (validateFunc(state.value)) {
-      errorLabel.show();
+      showError();
       state.isError = true;
     } else {
       errorLabel.hide();
       state.isError = false;
     }
+  }
+
+  function showError(mes?: string) {
+    if (mes) {
+      errorLabel.setProps({ content: mes });
+    }
+
+    errorLabel.show();
   }
 
   return {
@@ -67,6 +75,8 @@ export function creteParams({
       input,
       label,
     }),
+    name,
+    showError,
     state,
     validateInput,
   };

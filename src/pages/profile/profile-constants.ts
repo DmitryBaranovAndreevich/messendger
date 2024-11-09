@@ -66,7 +66,7 @@ export const userParamsConfig = [
 export const changePassConfig = [
   {
     label: "Старый пароль",
-    value: "123456789",
+    value: "",
     disabled: false,
     name: "oldPass",
     type: "password",
@@ -76,7 +76,7 @@ export const changePassConfig = [
   },
   {
     label: "Новый пароль",
-    value: "123456789",
+    value: "",
     disabled: false,
     name: "newPass",
     type: "password",
@@ -86,7 +86,7 @@ export const changePassConfig = [
   },
   {
     label: "Повторите новый пароль",
-    value: "123456789",
+    value: "",
     disabled: false,
     name: "repeat_newPass",
     type: "password",

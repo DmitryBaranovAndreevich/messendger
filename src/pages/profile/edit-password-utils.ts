@@ -5,6 +5,9 @@ import { Button as SubmitButton } from "../../components";
 import { EditPasswordTemplate } from "./edit-password";
 import styles from "./profile.module.scss";
 import { CenterPageLayout } from "../../layouts";
+import { ProfileAPI } from "./profile-api";
+
+const profileAPIInstance = new ProfileAPI();
 
 export function createEditPasswordTemplate(goToProfile: () => void) {
   const params = changePassConfig.map((el) =>
@@ -16,7 +19,7 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
       label: el.label,
       value: el.value,
       validateFunc: el.validateFunc,
-    })
+    }),
   );
 
   const htmlElements = params.reduce(
@@ -24,7 +27,7 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
       ...acc,
       [changePassConfig[index].name]: el.component,
     }),
-    {} as Record<keyof TEditPasswordTemplate, Params>
+    {} as Record<keyof TEditPasswordTemplate, Params>,
   );
 
   function validateForm() {
@@ -39,7 +42,7 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
         ...acc,
         [changePassConfig[index].name]: el.state.value,
       }),
-      {} as Record<keyof TEditPasswordTemplate, Params>
+      {} as Record<keyof TEditPasswordTemplate, string>,
     );
   }
 
@@ -68,7 +71,7 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
   }
 
   function goToEditPassTemplate() {
-    popup.hide()
+    popup.hide();
   }
 
   const editProfileTemplate = new EditPasswordTemplate({
@@ -77,16 +80,34 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
     changeAvatarButton,
     popup,
     events: {
-      submit: (e) => {
+      submit: async (e) => {
         e.preventDefault();
         const isValid = validateForm();
+        const password = params.find((el) => el.name === "password");
+        const repeatPasssword = params.find(
+          (el) => el.name === "repeat_newPass",
+        );
         if (isValid) {
-          const values = getFormValues();
-          console.log(values);
-          goToProfile();
+          const { oldPass, newPass, repeat_newPass } = getFormValues();
+          if (newPass !== repeat_newPass) {
+            password?.showError("Пароли не совпадают");
+            repeatPasssword?.showError("Пароли не совпадают");
+            return;
+          }
+
+          const response = await profileAPIInstance.editPass({
+            oldPassword: oldPass,
+            newPassword: newPass,
+          });
+          if (response.status === 200) {
+            goToProfile();
+          } else {
+            repeatPasssword?.showError(response.responseText);
+          }
         }
       },
     },
   });
   return editProfileTemplate;
 }
+// { oldPass: "Qwerty12", newPass: "Qwerty34", repeat_newPass: "Qwerty34" }

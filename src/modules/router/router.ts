@@ -23,7 +23,7 @@ export class Router {
 
   use(
     pathname: string,
-    block: () => Block<Record<string, TProps>>,
+    block: () => Promise<Block<Record<string, TProps>> | undefined>,
     RouteClass = Route,
   ) {
     const route = new RouteClass(pathname, block, { root: this._rootQuery });

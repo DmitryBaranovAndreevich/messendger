@@ -34,3 +34,28 @@ export type TEditPasswordTemplate = {
   changeAvatarButton: Button;
   popup: Block<Record<string, TProps>>;
 };
+
+export type TEditPassPayload = {
+  oldPassword: string;
+  newPassword: string;
+};
+
+export type TEditProfilePayload = {
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  email: string;
+  phone: string;
+};
+
+export type TUserInfo = {
+  id: string;
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  phone: string;
+  login: string;
+  avatar: string;
+  email: string;
+};

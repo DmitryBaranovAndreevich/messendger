@@ -4,7 +4,7 @@ import { ERouterEvents, eventBusRouter } from "../../utils";
 import { ErrorPageTemplate } from "./error-page";
 import styles from "./error-page.module.scss";
 
-export function createErrorPage({
+export async function createErrorPage({
   title,
   content,
 }: {

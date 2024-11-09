@@ -33,7 +33,9 @@ export function getInputWithItem({
         state.value = input.value;
         validateInputValue();
       },
-      input: () => {
+      input: (e) => {
+        const input = e.target as HTMLInputElement;
+        state.value = input.value;
         setError(false);
       },
     },

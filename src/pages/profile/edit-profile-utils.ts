@@ -1,12 +1,15 @@
 import { userParamsConfig } from "./profile-constants";
-import { TProfileTemplate } from "./profile-types";
+import { TProfileTemplate, TUserInfo } from "./profile-types";
 import { Button, createImgPopup, creteParams, Params } from "./components";
 import { EditProfileTemplate } from "./edit-profile";
 import { Button as SubmitButton } from "../../components";
 import { CenterPageLayout } from "../../layouts";
 import styles from "./profile.module.scss";
+import { ProfileAPI } from "./profile-api";
 
-export function createEditProfileTemplate(goToProfile: () => void) {
+const profileAPIInstance = new ProfileAPI();
+
+export function createEditProfileTemplate(goToProfile: () => void, userData: TUserInfo) {
   const params = userParamsConfig.map((el) =>
     creteParams({
       errorMessage: el.errorMessage || "",
@@ -14,9 +17,9 @@ export function createEditProfileTemplate(goToProfile: () => void) {
       disabled: "",
       name: el.name,
       label: el.label,
-      value: el.value,
+      value: userData[el.name as keyof TUserInfo],
       validateFunc: el.validateFunc,
-    })
+    }),
   );
 
   const htmlElements = params.reduce(
@@ -24,7 +27,7 @@ export function createEditProfileTemplate(goToProfile: () => void) {
       ...acc,
       [userParamsConfig[index].name]: el.component,
     }),
-    {} as Record<keyof TProfileTemplate, Params>
+    {} as Record<keyof TProfileTemplate, Params>,
   );
 
   function validateForm() {
@@ -39,7 +42,7 @@ export function createEditProfileTemplate(goToProfile: () => void) {
         ...acc,
         [userParamsConfig[index].name]: el.state.value,
       }),
-      {} as Record<keyof TProfileTemplate, Params>
+      {} as Record<keyof TProfileTemplate, string>,
     );
   }
 
@@ -78,13 +81,18 @@ export function createEditProfileTemplate(goToProfile: () => void) {
     changeAvatarButton,
     popup,
     events: {
-      submit: (e) => {
+      submit: async (e) => {
         e.preventDefault();
         const isValid = validateForm();
+        const phoneInput = params.find((el) => el.name === "phone");
         if (isValid) {
-          const values = getFormValues();
-          console.log(values);
-          goToProfile();
+          const formValues = getFormValues();
+          const response = await profileAPIInstance.editProfile(formValues);
+          if (response.status === 200) {
+            goToProfile();
+          } else {
+            phoneInput?.showError(response.responseText);
+          }
         }
       },
     },

@@ -1,15 +1,33 @@
 import { CenterPageLayout } from "../../layouts";
 import { userParamsConfig } from "./profile-constants";
 import { ProfileTemplate } from "./profile";
-import { TProfileTemplate } from "./profile-types";
+import { TProfileTemplate, TUserInfo } from "./profile-types";
 import { Button, creteParams, createImgPopup, Params } from "./components";
 import styles from "./profile.module.scss";
 import { createEditProfileTemplate } from "./edit-profile-utils";
 import { createEditPasswordTemplate } from "./edit-password-utils";
 import { ERouterEvents, eventBusRouter } from "../../utils";
+import { ProfileAPI } from "./profile-api";
 
-export function createProfile() {
-  function createProfileTemplate() {
+const profileAPIInstance = new ProfileAPI();
+
+const goToLogin = () => {
+  // eraseCookie("isLogin");
+  localStorage.removeItem("login")
+  const url = new URL(`${window.location.origin}`);
+  eventBusRouter.emit(ERouterEvents.URL_CHANGE, url.pathname);
+};
+
+export async function createProfile() {
+  const fetchUserData = async () => {
+    try {
+      return await profileAPIInstance.request();
+    } catch (e) {
+      goToLogin();
+    }
+  };
+  const userData = await fetchUserData();
+  function createProfileTemplate(userData: TUserInfo) {
     const params = userParamsConfig.map((el) =>
       creteParams({
         errorMessage: "",
@@ -17,7 +35,7 @@ export function createProfile() {
         disabled: `disabled="true"`,
         name: el.name,
         label: el.label,
-        value: el.value,
+        value: userData[el.name as keyof TUserInfo],
       }),
     );
 
@@ -47,9 +65,14 @@ export function createProfile() {
       content: "Выйти",
       className: styles.profile__exit,
       events: {
-        click: () => {
-          const url = new URL(`${window.location.origin}/messenger`);
-          eventBusRouter.emit(ERouterEvents.URL_CHANGE, url.pathname);
+        click: async () => {
+          const isExit = await profileAPIInstance.delete();
+          if (isExit.status === 200) {
+            // eraseCookie("isLogin");
+            localStorage.removeItem("login")
+            const url = new URL(`${window.location.origin}/messenger`);
+            eventBusRouter.emit(ERouterEvents.URL_CHANGE, url.pathname);
+          }
         },
       },
     });
@@ -86,13 +109,19 @@ export function createProfile() {
     return profileTemplate;
   }
 
+  if (!userData || userData?.status !== 200) {
+    goToLogin();
+    return;
+  }
+
+  const userConfig = JSON.parse(userData.responseText);
   const layout = new CenterPageLayout({
-    content: createProfileTemplate(),
+    content: createProfileTemplate(userConfig),
   });
 
   function onEditProfileClick() {
     layout.setProps({
-      content: createEditProfileTemplate(goToProfile),
+      content: createEditProfileTemplate(goToProfile, userConfig),
     });
   }
 
@@ -104,7 +133,7 @@ export function createProfile() {
 
   function goToProfile() {
     layout.setProps({
-      content: createProfileTemplate(),
+      content: createProfileTemplate(userConfig),
     });
   }
 

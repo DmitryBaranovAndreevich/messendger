@@ -3,7 +3,7 @@ import { getInputWithItem } from "../../components";
 import { Button, InputWithItem, Link } from "../../components";
 import { TLoginTemplate, TLoginUserRequest } from "./login-types";
 import { LoginTemplate } from "./login";
-import { ERouterEvents, eventBusRouter, setCookie } from "../../utils";
+import { ERouterEvents, eventBusRouter } from "../../utils";
 import { validateUserLogin, validateUserPassword } from "../../utils";
 import { LoginAPI } from "./login-api";
 import styles from "./login.module.scss";
@@ -32,18 +32,17 @@ const LOGIN_INPUT_FIELDS = [
   },
 ];
 
-const inputs = LOGIN_INPUT_FIELDS.map((el) =>
-  getInputWithItem({
-    type: el.type,
-    name: el.name,
-    item: el.label,
-    error: el.errorMessage,
-    disabled: el.disabled,
-    validateFunc: el.validateFunc,
-  }),
-);
-
-export function createLoginPage() {
+export async function createLoginPage() {
+  const inputs = LOGIN_INPUT_FIELDS.map((el) =>
+    getInputWithItem({
+      type: el.type,
+      name: el.name,
+      item: el.label,
+      error: el.errorMessage,
+      disabled: el.disabled,
+      validateFunc: el.validateFunc,
+    }),
+  );
   const htmlElements = inputs.reduce(
     (acc, el) => ({
       ...acc,
@@ -82,11 +81,11 @@ export function createLoginPage() {
         inputs.forEach((input) => {
           input.validateInputValue();
         });
+        const password = inputs.find((el) => el.name === "password");
         const isError = inputs.find((el) => el.state.isError);
         if (isError) {
           return;
         }
-
         const formValue = inputs.reduce(
           (acc, el) => ({ ...acc, [el.name]: el.state.value }),
           {} as TLoginUserRequest,
@@ -94,8 +93,10 @@ export function createLoginPage() {
 
         const response = await loginAPIInstance.request(formValue);
         if (response.status === 200) {
-          setCookie("isLogin", "true", { expires: 1200 });
+          localStorage.setItem("login", "true")
           eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
+        } else {
+          password?.setError(true, response.responseText);
         }
       },
     },

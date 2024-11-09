@@ -3,7 +3,7 @@ import { CHATS_LIST } from "./chats-constants";
 import { createRightColumn, createLeftColumn } from "./components";
 import styles from "./chats.module.scss";
 
-export function createChatsPage() {
+export async function createChatsPage() {
   const contentColumn = createRightColumn();
   const chatsColumn = createLeftColumn(CHATS_LIST, setActiveChatId);
   const chatsTemplate = new ChatsTemplate({
