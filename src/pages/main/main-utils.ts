@@ -8,8 +8,8 @@ import { ERouterEvents, eventBusRouter } from "../../utils";
 
 const router = new Router("#root");
 
-eventBusRouter.on(ERouterEvents.URL_CHANGE, (route: string) =>
-  router.go.call(router, route),
+eventBusRouter.on(ERouterEvents.URL_CHANGE, (route: string, flag?: boolean) =>
+  router.go.call(router, route, flag),
 );
 
 router

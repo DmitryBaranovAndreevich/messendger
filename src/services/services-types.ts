@@ -10,7 +10,7 @@ export interface IHTTPTransport {
 }
 
 export type TTypeTOptions = {
-  data?: Record<string, string | number>;
+  data?: Record<string, string | number> | FormData;
   headers?: Record<string, string>;
   timeout?: number;
 };

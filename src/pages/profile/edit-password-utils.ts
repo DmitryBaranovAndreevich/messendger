@@ -1,15 +1,19 @@
 import { changePassConfig } from "./profile-constants";
-import { TEditPasswordTemplate } from "./profile-types";
+import { TEditPasswordTemplate, TUserInfo } from "./profile-types";
 import { Button, createImgPopup, creteParams, Params } from "./components";
 import { Button as SubmitButton } from "../../components";
 import { EditPasswordTemplate } from "./edit-password";
 import styles from "./profile.module.scss";
 import { CenterPageLayout } from "../../layouts";
 import { ProfileAPI } from "./profile-api";
+import defaultAvatarImg from "../../icons/imgLoader.svg";
 
 const profileAPIInstance = new ProfileAPI();
 
-export function createEditPasswordTemplate(goToProfile: () => void) {
+export function createEditPasswordTemplate(
+  goToProfile: () => void,
+  userData: TUserInfo,
+) {
   const params = changePassConfig.map((el) =>
     creteParams({
       errorMessage: el.errorMessage,
@@ -78,32 +82,39 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
     ...htmlElements,
     submitButton,
     changeAvatarButton,
+    avatarImg: userData.avatar
+      ? `https://ya-praktikum.tech/api/v2/resources${userData.avatar}`
+      : defaultAvatarImg,
     popup,
     events: {
       submit: async (e) => {
-        e.preventDefault();
-        const isValid = validateForm();
-        const password = params.find((el) => el.name === "password");
-        const repeatPasssword = params.find(
-          (el) => el.name === "repeat_newPass",
-        );
-        if (isValid) {
-          const { oldPass, newPass, repeat_newPass } = getFormValues();
-          if (newPass !== repeat_newPass) {
-            password?.showError("Пароли не совпадают");
-            repeatPasssword?.showError("Пароли не совпадают");
-            return;
-          }
+        try {
+          e.preventDefault();
+          const isValid = validateForm();
+          const password = params.find((el) => el.name === "password");
+          const repeatPasssword = params.find(
+            (el) => el.name === "repeat_newPass",
+          );
+          if (isValid) {
+            const { oldPass, newPass, repeat_newPass } = getFormValues();
+            if (newPass !== repeat_newPass) {
+              password?.showError("Пароли не совпадают");
+              repeatPasssword?.showError("Пароли не совпадают");
+              return;
+            }
 
-          const response = await profileAPIInstance.editPass({
-            oldPassword: oldPass,
-            newPassword: newPass,
-          });
-          if (response.status === 200) {
-            goToProfile();
-          } else {
-            repeatPasssword?.showError(response.responseText);
+            const response = await profileAPIInstance.editPass({
+              oldPassword: oldPass,
+              newPassword: newPass,
+            });
+            if (response.status === 200) {
+              goToProfile();
+            } else {
+              repeatPasssword?.showError(response.responseText);
+            }
           }
+        } catch (e) {
+          throw new Error("Проблемы с редактированием профиля");
         }
       },
     },

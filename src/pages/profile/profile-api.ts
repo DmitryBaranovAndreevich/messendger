@@ -19,7 +19,13 @@ export class ProfileAPI extends BaseAPI {
   }
 
   editProfile(editProfilePayload: TEditProfilePayload) {
-    return profileApiInstance.put("/user/password", {
+    return profileApiInstance.put("/user/profile", {
+      data: editProfilePayload,
+    });
+  }
+
+  editAvatar(editProfilePayload: FormData) {
+    return profileApiInstance.put("/user/profile/avatar", {
       data: editProfilePayload,
     });
   }

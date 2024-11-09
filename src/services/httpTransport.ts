@@ -43,14 +43,17 @@ export class HTTPTransport implements IHTTPTransport {
 
   request = (url: string, options: TTypeTOptions & { method: string }) => {
     const { method, data, headers = {}, timeout = 15000 } = options;
-    const DEFAULT_HEADER = data ? { "Content-Type": `application/json` } : {};
+    const DEFAULT_HEADER = data && !(data instanceof FormData)? { "Content-Type": `application/json` } : {};
 
     return new Promise<XMLHttpRequest>((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       const parmsUrl =
-        method === METHODS.GET ? `${url}?${queryStringify(data)}` : url;
+        method === METHODS.GET
+          ? `${url}?${queryStringify(data as Record<string, string | number>)}`
+          : url;
       xhr.open(method, parmsUrl);
-      Object.entries({ ...headers, ...DEFAULT_HEADER }).forEach(
+      xhr.withCredentials = true;
+      Object.entries({ ...DEFAULT_HEADER, ...headers }).forEach(
         ([header, value]) => {
           xhr.setRequestHeader(header, value);
         },
@@ -68,7 +71,13 @@ export class HTTPTransport implements IHTTPTransport {
       if (method === METHODS.GET) {
         xhr.send();
       } else {
-        xhr.send(data ? JSON.stringify(data) : undefined);
+        const uploadData =
+          data && data instanceof FormData
+            ? data
+            : data
+              ? JSON.stringify(data)
+              : undefined;
+        xhr.send(uploadData);
       }
     });
   };

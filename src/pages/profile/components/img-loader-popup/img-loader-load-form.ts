@@ -12,7 +12,7 @@ export class ImgLoadForm extends Block<TImgLoaderForm> {
               <form class="${styles.imgLoader__form}">
                 <label class="${styles.imgLoader__inputLabel}" for="${styles.imgLoader__input}">Выбрать файл на компьютере</label>
                 {{{fileLabel}}}
-                <input id="${styles.imgLoader__input}" name="photo" type="file" />
+                <input id="${styles.imgLoader__input}" name="avatar" type="file" />
                 {{{submitButton}}}
                 {{{exitButton}}}
                 {{{errorLabel}}}

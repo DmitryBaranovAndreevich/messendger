@@ -10,6 +10,7 @@ export type TProfileTemplate = {
   login: Params;
   email: Params;
   name: string;
+  avatarImg: string;
   editProfileButton: Button;
   changePassButton: Button;
   exitButton: Button;
@@ -27,6 +28,7 @@ export interface ICreateProfile {
 }
 
 export type TEditPasswordTemplate = {
+  avatarImg: string;
   oldPass: Params;
   newPass: Params;
   repeat_newPass: Params;
@@ -41,6 +43,7 @@ export type TEditPassPayload = {
 };
 
 export type TEditProfilePayload = {
+  avatarImg: string;
   first_name: string;
   second_name: string;
   display_name: string;

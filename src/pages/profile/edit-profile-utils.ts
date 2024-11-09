@@ -6,10 +6,14 @@ import { Button as SubmitButton } from "../../components";
 import { CenterPageLayout } from "../../layouts";
 import styles from "./profile.module.scss";
 import { ProfileAPI } from "./profile-api";
+import defaultAvatarImg from "../../icons/imgLoader.svg";
 
 const profileAPIInstance = new ProfileAPI();
 
-export function createEditProfileTemplate(goToProfile: () => void, userData: TUserInfo) {
+export function createEditProfileTemplate(
+  goToProfile: () => void,
+  userData: TUserInfo,
+) {
   const params = userParamsConfig.map((el) =>
     creteParams({
       errorMessage: el.errorMessage || "",
@@ -79,20 +83,27 @@ export function createEditProfileTemplate(goToProfile: () => void, userData: TUs
     name: "Иван",
     submitButton,
     changeAvatarButton,
+    avatarImg: userData.avatar
+      ? `https://ya-praktikum.tech/api/v2/resources${userData.avatar}`
+      : defaultAvatarImg,
     popup,
     events: {
       submit: async (e) => {
         e.preventDefault();
         const isValid = validateForm();
         const phoneInput = params.find((el) => el.name === "phone");
-        if (isValid) {
-          const formValues = getFormValues();
-          const response = await profileAPIInstance.editProfile(formValues);
-          if (response.status === 200) {
-            goToProfile();
-          } else {
-            phoneInput?.showError(response.responseText);
+        try {
+          if (isValid) {
+            const formValues = getFormValues();
+            const response = await profileAPIInstance.editProfile(formValues);
+            if (response.status === 200) {
+              goToProfile();
+            } else {
+              phoneInput?.showError(response.responseText);
+            }
           }
+        } catch (e) {
+          phoneInput?.showError("Проблемы с редактированием профиля");
         }
       },
     },

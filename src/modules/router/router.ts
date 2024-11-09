@@ -55,8 +55,12 @@ export class Router {
     route?.render();
   }
 
-  go(pathname: string) {
-    this.history?.pushState({}, "", pathname);
+  go(pathname: string, flag = true) {
+    if (flag) {
+      this.history?.pushState({}, "", pathname);
+    } else {
+      this.history?.replaceState({}, "", pathname);
+    }
     this._onRoute(pathname);
   }
 

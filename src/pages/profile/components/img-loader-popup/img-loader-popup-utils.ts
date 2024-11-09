@@ -3,6 +3,9 @@ import { ImgLoadForm } from "./img-loader-load-form";
 import { ImgLoader } from "./img-loader-popup";
 import { ImgName } from "./img-name";
 import styles from "./img-loader-popup.module.scss";
+import { ProfileAPI } from "../../profile-api";
+
+const profileAPIInstance = new ProfileAPI();
 
 function createImgLoaderForm(goToProfile: () => void) {
   const submitButton = new Button({
@@ -62,7 +65,7 @@ function createImgName(fileName: string, onClick: (e: Event) => void) {
 }
 
 export const createImgPopup = (goToProfile: () => void) => {
-  const state: { logo?: string } = {
+  const state: { logo?: FileList } = {
     logo: undefined,
   };
 
@@ -85,24 +88,36 @@ export const createImgPopup = (goToProfile: () => void) => {
       fileLabel.setProps({
         content: files[0].name,
       });
+      state.logo = files;
     }
   }
 
-  function handleSubmitFormInput(e: Event) {
-    e.preventDefault();
-    e.stopPropagation();
-    const form = e.target as HTMLFormElement;
-    const input = form.elements[0] as HTMLInputElement;
-    const files = input.files;
-    if (files && files.length > 0) {
-      state.logo = files[0].name;
-      console.log(files[0]);
-      if (state.logo) {
-        loader.setProps({
-          content: createImgName(files[0].name, handleOkButtonClick),
-        });
+  async function handleSubmitFormInput(e: Event) {
+    try {
+      e.preventDefault();
+      e.stopPropagation();
+      const form = e.target as HTMLFormElement;
+      const input = form.elements[0] as HTMLInputElement;
+      const files = input.files;
+      if (files && files.length > 0) {
+        if (state.logo) {
+          const imgForm = new FormData(form);
+          const response = await profileAPIInstance.editAvatar(imgForm);
+          if (response?.status === 200) {
+            loader.setProps({
+              content: createImgName(files[0].name, handleOkButtonClick),
+            });
+          } else {
+            errorLabel.setProps({ content: response.responseText });
+            errorLabel.show();
+          }
+        }
+      } else {
+        errorLabel.setProps({ content: "Загрузите фото" });
+        errorLabel.show();
       }
-    } else {
+    } catch (e) {
+      errorLabel.setProps({ content: "Проблемы с загрузкой фото" });
       errorLabel.show();
     }
   }

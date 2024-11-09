@@ -3,7 +3,7 @@ import { getInputWithItem } from "../../components";
 import { Button, InputWithItem, Link } from "../../components";
 import { TLoginTemplate, TLoginUserRequest } from "./login-types";
 import { LoginTemplate } from "./login";
-import { ERouterEvents, eventBusRouter } from "../../utils";
+import { ERouterEvents, eventBusRouter, setCookie } from "../../utils";
 import { validateUserLogin, validateUserPassword } from "../../utils";
 import { LoginAPI } from "./login-api";
 import styles from "./login.module.scss";
@@ -93,7 +93,7 @@ export async function createLoginPage() {
 
         const response = await loginAPIInstance.request(formValue);
         if (response.status === 200) {
-          localStorage.setItem("login", "true")
+          setCookie("login", "true", { expires: 999999999999999 });
           eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
         } else {
           password?.setError(true, response.responseText);

@@ -6,7 +6,7 @@ import { Button, InputWithItem } from "../../components";
 import { RegisterTemplate } from "./register";
 import { RegisterAPI } from "./register-api";
 import styles from "./register.module.scss";
-import { ERouterEvents, eventBusRouter } from "../../utils";
+import { ERouterEvents, eventBusRouter, setCookie } from "../../utils";
 
 const registerAPI = new RegisterAPI();
 
@@ -68,7 +68,7 @@ export async function createRegister() {
 
         const response = await registerAPI.create(rest);
         if (response.status === 200) {
-          localStorage.setItem("login", "true")
+          setCookie("login", "true", { expires: 999999999999999 });
           eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
         }
       },

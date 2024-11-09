@@ -1,4 +1,4 @@
-import { ERouterEvents, eventBusRouter } from "../../utils";
+import { ERouterEvents, eventBusRouter, getCookie } from "../../utils";
 import { Block, TProps } from "../block";
 import { Route } from "./route";
 
@@ -12,7 +12,7 @@ export class LoginRoute extends Route {
   }
 
   async render() {
-    const isLogin =  localStorage.getItem("login")
+    const isLogin = getCookie("login");
     if (isLogin) {
       eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
       return;
