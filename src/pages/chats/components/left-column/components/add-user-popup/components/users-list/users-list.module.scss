@@ -1,0 +1,11 @@
+.userTitle {
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+}
+
+.popup {
+  height: 200px;
+  overflow: scroll;
+}

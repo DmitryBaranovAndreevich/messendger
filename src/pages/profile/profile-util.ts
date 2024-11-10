@@ -146,7 +146,7 @@ export async function createProfile() {
 
     return layout;
   } catch (e) {
-    goToLogin();
+    eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/400");
     throw new Error("Не удалось загрузить профиль");
   }
 }

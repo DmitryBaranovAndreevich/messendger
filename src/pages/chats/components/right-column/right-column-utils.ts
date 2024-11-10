@@ -1,9 +1,11 @@
+import { ChatsAPI } from "../../chats-api";
+import { TChats, TUser } from "../../chats-types";
 import { Chat, Message, NoChatsTitle } from "./components";
 import { RightColumnTemplate } from "./right-column";
 
-export function createRightColumn(
-  chatContent?: Record<string, string | number | boolean>[],
-) {
+const chatsApi = new ChatsAPI();
+
+export async function createRightColumn(user: TUser, chatContent?: TChats) {
   const noChatsTitle = new NoChatsTitle({});
 
   const message = new Message({
@@ -23,10 +25,28 @@ export function createRightColumn(
     },
   });
 
-  const rightColumn = new RightColumnTemplate({
-    content: chatContent ? new Chat({ chats: chatContent }) : noChatsTitle,
+  if (chatContent) {
+    const tokenResponse = await chatsApi.getChatToken(chatContent.id);
+    if (tokenResponse.status !== 200) {
+      throw new Error("не удалось получить доступ к чату");
+    }
+    const token: { token: string } = JSON.parse(tokenResponse.responseText);
+    const socket = new WebSocket(
+      `wss://ya-praktikum.tech/ws/chats/${user.id}/${chatContent.id}/${token}`,
+    );
+    socket.addEventListener('open', () => {
+      console.log('Соединение установлено');
+    });
+    const chatContentResponse = chatsApi.getChat(chatContent?.id);
+    const chats = JSON.parse((await chatContentResponse).responseText);
+    return new RightColumnTemplate({
+      content: new Chat({ chats }),
+      message,
+    });
+  }
+
+  return new RightColumnTemplate({
+    content: noChatsTitle,
     message,
   });
-
-  return rightColumn;
 }

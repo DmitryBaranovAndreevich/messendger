@@ -4,7 +4,7 @@ import styles from "./link.module.scss";
 type TLink = {
   content: string;
   className?: string;
-  url: string;
+  url?: string;
 };
 
 export class Link extends Block<TLink> {

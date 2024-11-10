@@ -13,5 +13,13 @@
 
   &__link {
     text-align: end;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__links {
+    display: flex;
+    justify-content: space-between;
   }
 }

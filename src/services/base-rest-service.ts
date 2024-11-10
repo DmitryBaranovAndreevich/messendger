@@ -11,7 +11,7 @@ export class BaseAPI {
     throw new Error("Not implemented");
   }
 
-  delete() {
+  delete(args?: unknown) {
     throw new Error("Not implemented");
   }
 }
