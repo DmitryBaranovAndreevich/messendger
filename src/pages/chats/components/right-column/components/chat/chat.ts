@@ -12,12 +12,12 @@ export class Chat extends Block<TChat> {
                 <li class="${styles.chats__container}" >
                   {{#if owner}}
                     <div class="${styles.chats__mes} ${styles.chats__ownerMes}">
-                       <label>\{{text}}</label>
+                       <label>\{{content}}</label>
                        <p class="${styles.chats__time}">\{{time}}</p>
                     </div>
                   {{else}} 
                     <div class="${styles.chats__mes} ${styles.chats__anotherMes}">
-                      <label>\{{text}}</label>
+                      <label>\{{content}}</label>
                       <p class="${styles.chats__time}">\{{time}}</p>
                     </div>
                   {{/if}}

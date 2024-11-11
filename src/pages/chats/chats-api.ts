@@ -20,7 +20,7 @@ export class ChatsAPI extends BaseAPI {
   }
 
   getChat(id: string) {
-    return chatsApiInstance.get(`/chats/${id}/files`);
+    return chatsApiInstance.get(`/chats/new/${id}`);
   }
 
   addUserToChat(chatId: string, userLogin: string) {

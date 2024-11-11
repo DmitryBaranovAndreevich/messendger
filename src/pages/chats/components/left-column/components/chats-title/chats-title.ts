@@ -14,7 +14,7 @@ export class ChatsTitle extends Block<TChatsTitle> {
                 <div class="${styles.chatsTitle__titleWrapper}">
                   <p class="${styles.chatsTitle__title}">\{{title}}</p>
                   <label class="${styles.chatsTitle__comment}">
-                    {{#if comment.owner}}
+                    {{#if last_message.owner}}
                       <label class="${styles.chatsTitle__label}">Вы: </label>
                     {{/if}}
                     \{{last_message.content}}
