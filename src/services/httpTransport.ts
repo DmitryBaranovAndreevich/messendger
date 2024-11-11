@@ -43,7 +43,10 @@ export class HTTPTransport implements IHTTPTransport {
 
   request = (url: string, options: TTypeTOptions & { method: string }) => {
     const { method, data, headers = {}, timeout = 15000 } = options;
-    const DEFAULT_HEADER = data && !(data instanceof FormData)? { "Content-Type": `application/json` } : {};
+    const DEFAULT_HEADER =
+      data && !(data instanceof FormData)
+        ? { "Content-Type": `application/json` }
+        : {};
 
     return new Promise<XMLHttpRequest>((resolve, reject) => {
       const xhr = new XMLHttpRequest();
