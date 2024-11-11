@@ -1,9 +1,9 @@
 export class BaseAPI {
-  create(args?: unknown) {
+  create(_args?: unknown) {
     throw new Error("Not implemented");
   }
 
-  request(args?: unknown) {
+  request(_args?: unknown) {
     throw new Error("Not implemented");
   }
 
@@ -11,7 +11,7 @@ export class BaseAPI {
     throw new Error("Not implemented");
   }
 
-  delete(args?: unknown) {
+  delete(_args?: unknown) {
     throw new Error("Not implemented");
   }
 }
