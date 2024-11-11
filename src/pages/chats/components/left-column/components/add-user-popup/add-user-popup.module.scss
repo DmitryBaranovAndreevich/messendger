@@ -1,0 +1,25 @@
+@import "../../../../../../styles/index";
+
+.popup {
+  background: #fff;
+  max-width: 300px;
+  width: 100%;
+  border-radius: 12px;
+  padding: 40px 30px;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &_dark {
+    background: $popupBackground;
+  }
+
+  & .exitButton {
+    margin-top: 20px;
+    background-color: $colorError;
+  }
+}

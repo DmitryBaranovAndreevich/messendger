@@ -1,11 +1,14 @@
 import { CenterPageLayout } from "../../layouts";
 import { getInputWithItem } from "../../components";
 import { Button, InputWithItem, Link } from "../../components";
-import { TLoginTemplate } from "./login-types";
+import { TLoginTemplate, TLoginUserRequest } from "./login-types";
 import { LoginTemplate } from "./login";
-import styles from "./login.module.scss";
-import { ERouterEvents, eventBusRouter } from "../utils";
+import { ERouterEvents, eventBusRouter, setCookie } from "../../utils";
 import { validateUserLogin, validateUserPassword } from "../../utils";
+import { LoginAPI } from "./login-api";
+import styles from "./login.module.scss";
+
+const loginAPIInstance = new LoginAPI();
 
 const LOGIN_INPUT_FIELDS = [
   {
@@ -29,18 +32,17 @@ const LOGIN_INPUT_FIELDS = [
   },
 ];
 
-const inputs = LOGIN_INPUT_FIELDS.map((el) =>
-  getInputWithItem({
-    type: el.type,
-    name: el.name,
-    item: el.label,
-    error: el.errorMessage,
-    disabled: el.disabled,
-    validateFunc: el.validateFunc,
-  }),
-);
-
-export function createLoginPage() {
+export async function createLoginPage() {
+  const inputs = LOGIN_INPUT_FIELDS.map((el) =>
+    getInputWithItem({
+      type: el.type,
+      name: el.name,
+      item: el.label,
+      error: el.errorMessage,
+      disabled: el.disabled,
+      validateFunc: el.validateFunc,
+    }),
+  );
   const htmlElements = inputs.reduce(
     (acc, el) => ({
       ...acc,
@@ -57,14 +59,14 @@ export function createLoginPage() {
 
   const link = new Link({
     content: "Нет аккаунта?",
-    url: `${window.location.origin}/register`,
+    url: `${window.location.origin}/sign-up`,
     className: styles.loginPage__link,
     events: {
       click: (e: Event) => {
         e.preventDefault();
         const a = e.target as HTMLLinkElement;
-        history.pushState({}, "", a.href);
-        eventBusRouter.emit(ERouterEvents.URL_CHANGE);
+        const url = new URL(a.href);
+        eventBusRouter.emit(ERouterEvents.URL_CHANGE, url.pathname);
       },
     },
   });
@@ -74,21 +76,28 @@ export function createLoginPage() {
     buttonSubmit,
     link,
     events: {
-      submit: (e) => {
+      submit: async (e) => {
         e.preventDefault();
         inputs.forEach((input) => {
           input.validateInputValue();
         });
+        const password = inputs.find((el) => el.name === "password");
         const isError = inputs.find((el) => el.state.isError);
         if (isError) {
           return;
         }
-
         const formValue = inputs.reduce(
           (acc, el) => ({ ...acc, [el.name]: el.state.value }),
-          {},
+          {} as TLoginUserRequest,
         );
-        console.log(formValue);
+
+        const response = await loginAPIInstance.request(formValue);
+        if (response.status === 200) {
+          setCookie("login", "true", { expires: 999999999999999 });
+          eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
+        } else {
+          password?.setError(true, response.responseText);
+        }
       },
     },
   });

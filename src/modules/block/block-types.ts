@@ -15,7 +15,6 @@ export type TProps =
   | string
   | number
   | string[]
-  | number
   | boolean
   | Record<string, (e: Event) => void>
   | Record<string, unknown>

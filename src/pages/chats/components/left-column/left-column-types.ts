@@ -1,10 +1,14 @@
 import { Link } from "../../../../components";
+import { CenterPageLayout } from "../../../../layouts";
 import { ChatsTitle, Input } from "./components";
 
 export type TLeftColumnTemplate = {
   linkButton: Link;
+  newChatButton: Link;
   searchInput: Input;
   chatsList: ChatsTitle;
+  createChatPopup: CenterPageLayout;
+  addUserPopup: CenterPageLayout;
 };
 
 export type TChatsData = {

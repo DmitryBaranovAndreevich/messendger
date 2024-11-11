@@ -1,12 +1,16 @@
 import { registerParamsConfig } from "./register-constants";
 import { CenterPageLayout } from "../../layouts";
 import { getInputWithItem } from "../../components";
-import { TRegisterTemplate } from "./register-types";
+import { TRegisterRequestParams, TRegisterTemplate } from "./register-types";
 import { Button, InputWithItem } from "../../components";
 import { RegisterTemplate } from "./register";
+import { RegisterAPI } from "./register-api";
 import styles from "./register.module.scss";
+import { ERouterEvents, eventBusRouter, setCookie } from "../../utils";
 
-export function createRegister() {
+const registerAPI = new RegisterAPI();
+
+export async function createRegister() {
   const inputs = registerParamsConfig.map((el) =>
     getInputWithItem({
       type: el.type,
@@ -36,7 +40,7 @@ export function createRegister() {
     ...htmlElements,
     buttonSubmit,
     events: {
-      submit: (e) => {
+      submit: async (e) => {
         e.preventDefault();
         inputs.forEach((input) => {
           input.validateInputValue();
@@ -46,11 +50,27 @@ export function createRegister() {
           return;
         }
 
+        const password = inputs.find((el) => el.name === "password");
+        const passwordRepeat = inputs.find(
+          (el) => el.name === "repeat_password",
+        );
+        if (password?.state.value !== passwordRepeat?.state.value) {
+          password?.setError(true, "Пароли не совпадают");
+          passwordRepeat?.setError(true, "Пароли не совпадают");
+          return;
+        }
+
         const formValue = inputs.reduce(
           (acc, el) => ({ ...acc, [el.name]: el.state.value }),
-          {},
+          {} as TRegisterRequestParams & { repeat_password: string },
         );
-        console.log(formValue);
+        const { repeat_password, ...rest } = formValue;
+
+        const response = await registerAPI.create(rest);
+        if (response.status === 200) {
+          setCookie("login", "true", { expires: 999999999999999 });
+          eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
+        }
       },
     },
   });
