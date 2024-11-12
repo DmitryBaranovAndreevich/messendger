@@ -1,5 +1,5 @@
 import { Block, TPropsObj } from "../../modules";
-import { TEditProfileTemplate } from "./profile-types"; 
+import { TEditProfileTemplate } from "./profile-types";
 import styles from "./profile.module.scss";
 
 export class EditProfileTemplate extends Block<TEditProfileTemplate> {

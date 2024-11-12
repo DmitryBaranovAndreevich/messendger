@@ -4,5 +4,5 @@ import { Input } from "../input";
 export type TParams = {
   label: string;
   input: Input;
-  errorLabel: Label
+  errorLabel: Label;
 };

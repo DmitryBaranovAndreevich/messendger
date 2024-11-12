@@ -14,4 +14,3 @@ export class Params extends Block<TParams> {
             </li>`;
   }
 }
-

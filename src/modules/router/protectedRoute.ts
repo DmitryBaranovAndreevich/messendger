@@ -13,7 +13,7 @@ export class ProtectedRoute extends Route {
 
   async render() {
     const isLogin = getCookie("login");
- 
+
     if (!isLogin) {
       eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/");
       return;

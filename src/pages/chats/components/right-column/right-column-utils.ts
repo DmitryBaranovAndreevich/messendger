@@ -1,3 +1,4 @@
+import { escapeSymbols } from "../../chat-utils";
 import { ChatsAPI } from "../../chats-api";
 import { getDataStr } from "../../chats-constants";
 import { TChats, TUser } from "../../chats-types";
@@ -41,9 +42,11 @@ export async function createRightColumn(user: TUser, chatContent?: TChats) {
               return;
             }
 
+            const escapeInput = escapeSymbols(inputMessage);
+
             socket.send(
               JSON.stringify({
-                content: inputMessage,
+                content: escapeInput,
                 type: "message",
               }),
             );
@@ -70,7 +73,7 @@ export async function createRightColumn(user: TUser, chatContent?: TChats) {
                 },
               ]
             : [];
-        state.messages.push(...messages);
+        state.messages.push(...messages.reverse());
         renderChat();
       });
 

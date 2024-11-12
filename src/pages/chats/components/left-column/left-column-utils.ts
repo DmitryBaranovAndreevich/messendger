@@ -15,10 +15,12 @@ const chatsApi = new ChatsAPI();
 
 export function createLeftColumn(
   chats: TChats[],
-  selectId: (id: string) => Promise<void>,
+  selectId: (id: string, filter?: string) => Promise<void>,
+  filter = "",
 ) {
+  const state: { chats: TChats[]; filter: string } = { chats, filter };
   const chatsList = new ChatsTitle({
-    chats,
+    chats: state.chats,
     events: {
       click: async (e) => {
         const element = e.target as HTMLDivElement | HTMLButtonElement;
@@ -45,7 +47,7 @@ export function createLeftColumn(
         } else {
           if (chatId) {
             try {
-              await selectId(chatId);
+              await selectId(chatId, state.filter);
             } catch (e) {
               throw new Error("Не удалось обновить данные");
             }
@@ -54,6 +56,7 @@ export function createLeftColumn(
       },
     },
   });
+  filterChats(state.filter);
 
   const linkButton = new Link({
     content: "В профиль >",
@@ -90,7 +93,17 @@ export function createLeftColumn(
     chatPopup.hide();
   }
 
-  const searchInput = new Input({ name: "message" });
+  const searchInput = new Input({
+    name: "message",
+    value: state.filter,
+    events: {
+      input: (e) => {
+        const input = e.target as HTMLInputElement;
+        state.filter = input.value;
+        filterChats(input.value);
+      },
+    },
+  });
   const leftColumn = new LeftColumnTemplate({
     linkButton,
     newChatButton,
@@ -110,6 +123,13 @@ export function createLeftColumn(
     addUserPopup = createAddUserPopup(chatId);
     leftColumn.setProps({ addUserPopup });
     addUserPopup.show("flex");
+  }
+
+  function filterChats(filter: string) {
+    const filterChats = chats.filter((chat) =>
+      chat.title.match(new RegExp(filter)),
+    );
+    chatsList.setProps({ chats: filterChats });
   }
 
   return leftColumn;
