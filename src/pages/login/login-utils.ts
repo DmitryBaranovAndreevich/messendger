@@ -93,9 +93,16 @@ export async function createLoginPage() {
 
         const response = await loginAPIInstance.request(formValue);
         if (response.status === 200) {
-          setCookie("login", "true", { expires: 999999999999999 });
+          setCookie("login", "true", { expires: 1200 });
           eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
         } else {
+          const error = JSON.parse(response.responseText);
+          if (error.reason === "User already in system") {
+            setCookie("login", "true", { expires: 1200 });
+            eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
+            return;
+          }
+
           password?.setError(true, response.responseText);
         }
       },

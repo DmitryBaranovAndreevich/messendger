@@ -68,7 +68,7 @@ export async function createRegister() {
 
         const response = await registerAPI.create(rest);
         if (response.status === 200) {
-          setCookie("login", "true", { expires: 999999999999999 });
+          setCookie("login", "true", { expires: 1200 });
           eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
         }
       },
