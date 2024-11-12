@@ -17,28 +17,27 @@ export async function createChatsPage() {
       throw new Error("Проблема с  загрузкой даных");
     }
     const user: TUser = JSON.parse(userResponse.responseText);
-    const chats: TChats[] = (
-      JSON.parse(userChats.responseText) as TChats[]
-    ).map((el) =>
-      el.last_message
-        ? {
-            ...el,
-            time: getDataStr(el.last_message.time),
-            avatar: el.avatar
-              ? `https://ya-praktikum.tech/api/v2/resources${el.avatar}`
-              : defaultImg,
-            last_message: {
-              ...el.last_message,
-              owner: el.last_message.user.login === user.login,
+    let chats: TChats[] = (JSON.parse(userChats.responseText) as TChats[]).map(
+      (el) =>
+        el.last_message
+          ? {
+              ...el,
+              time: getDataStr(el.last_message.time),
+              avatar: el.avatar
+                ? `https://ya-praktikum.tech/api/v2/resources${el.avatar}`
+                : defaultImg,
+              last_message: {
+                ...el.last_message,
+                owner: el.last_message.user.login === user.login,
+              },
+            }
+          : {
+              ...el,
+              time: getDataStr(el.created_by),
+              avatar: el.avatar
+                ? `https://ya-praktikum.tech/api/v2/resources${el.avatar}`
+                : defaultImg,
             },
-          }
-        : {
-            ...el,
-            time: getDataStr(el.created_by),
-            avatar: el.avatar
-              ? `https://ya-praktikum.tech/api/v2/resources${el.avatar}`
-              : defaultImg,
-          },
     );
     const contentColumn = await createRightColumn(user);
     const chatsColumn = createLeftColumn(chats, setActiveChatId);
@@ -53,6 +52,13 @@ export async function createChatsPage() {
 
     async function setActiveChatId(id: string, filter = "") {
       localStorage.setItem("activeChat", id);
+      chats = chats.map((el) => {
+        if (String(el.id) === String(id)) {
+          return { ...el, unread_count: 0 };
+        }
+
+        return el;
+      });
       const updateConfig = chats.map((el) => {
         if (String(el.id) === String(id)) {
           return { ...el, activeChat: styles.activeChat, unread_count: 0 };
