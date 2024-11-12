@@ -2,7 +2,6 @@ import { Block, TPropsObj } from "../../modules";
 import { TLoginTemplate } from "./login-types";
 import styles from "./login.module.scss";
 
-
 export class LoginTemplate extends Block<TLoginTemplate> {
   constructor(props: TPropsObj<TLoginTemplate>) {
     super(props);

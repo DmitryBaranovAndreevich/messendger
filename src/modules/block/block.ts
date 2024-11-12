@@ -73,9 +73,7 @@ export class Block<T extends Record<string, TProps>> implements IBlock<T> {
     });
   }
 
-
-  componentDidMount(_oldProps: TPropsObj<T>) {
-  }
+  componentDidMount(_oldProps: TPropsObj<T>) {}
 
   dispatchComponentDidMount() {
     this.eventBus().emit(EEvents.FLOW_CDM);
@@ -182,7 +180,7 @@ export class Block<T extends Record<string, TProps>> implements IBlock<T> {
   _makePropsProxy(props: TPropsObj<T> & { _id: string }) {
     const self = this;
     const propsProxy = new Proxy(props, {
-      set(target, props: string, value)  {
+      set(target, props: string, value) {
         self._removeEvents();
         const oldProp = target[props];
         if (self.children[props]) {

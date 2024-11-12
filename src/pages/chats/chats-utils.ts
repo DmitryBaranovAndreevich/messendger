@@ -46,8 +46,13 @@ export async function createChatsPage() {
       chatsColumn,
       contentColumn,
     });
+    const activeChat = localStorage.getItem("activeChat");
+    if (activeChat) {
+      await setActiveChatId(activeChat);
+    }
 
-    async function setActiveChatId(id: string) {
+    async function setActiveChatId(id: string, filter = "") {
+      localStorage.setItem("activeChat", id);
       const updateConfig = chats.map((el) => {
         if (String(el.id) === String(id)) {
           return { ...el, activeChat: styles.activeChat, unread_count: 0 };
@@ -60,7 +65,7 @@ export async function createChatsPage() {
         updateConfig.find((el) => String(el.id) === String(id)),
       );
       chatsTemplate.setProps({
-        chatsColumn: createLeftColumn(updateConfig, setActiveChatId),
+        chatsColumn: createLeftColumn(updateConfig, setActiveChatId, filter),
         contentColumn: rightColumn,
       });
     }
