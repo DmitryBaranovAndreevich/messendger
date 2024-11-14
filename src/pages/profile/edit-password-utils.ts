@@ -7,6 +7,7 @@ import styles from "./profile.module.scss";
 import { CenterPageLayout } from "../../layouts";
 import { ProfileAPI } from "./profile-api";
 import defaultAvatarImg from "../../icons/imgLoader.svg";
+import { BASE_URL } from "../../services";
 
 const profileAPIInstance = new ProfileAPI();
 
@@ -65,7 +66,7 @@ export function createEditPasswordTemplate(
 
   const popup = new CenterPageLayout({
     className: styles.profile_dark,
-    content: createImgPopup(goToEditPassTemplate),
+    content: createImgPopup(goToEditPassTemplate, changeAvatar),
   });
 
   popup.hide();
@@ -83,7 +84,7 @@ export function createEditPasswordTemplate(
     submitButton,
     changeAvatarButton,
     avatarImg: userData.avatar
-      ? `https://ya-praktikum.tech/api/v2/resources${userData.avatar}`
+      ? `${BASE_URL}/resources${userData.avatar}`
       : defaultAvatarImg,
     popup,
     events: {
@@ -114,11 +115,16 @@ export function createEditPasswordTemplate(
             }
           }
         } catch (e) {
-          throw new Error("Проблемы с редактированием профиля");
+          console.log("Проблемы с редактированием профиля");
         }
       },
     },
   });
+
+  function changeAvatar(url: string) {
+    editProfileTemplate.setProps({ avatarImg: `${BASE_URL}/resources/${url}` });
+  }
+
   return editProfileTemplate;
 }
 // { oldPass: "Qwerty12", newPass: "Qwerty34", repeat_newPass: "Qwerty34" }

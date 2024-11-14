@@ -9,6 +9,7 @@ import { createEditPasswordTemplate } from "./edit-password-utils";
 import { eraseCookie, ERouterEvents, eventBusRouter } from "../../utils";
 import { ProfileAPI } from "./profile-api";
 import defaultAvatarImg from "../../icons/imgLoader.svg";
+import { BASE_URL } from "../../services";
 
 const profileAPIInstance = new ProfileAPI();
 
@@ -25,7 +26,7 @@ export async function createProfile() {
         return await profileAPIInstance.request();
       } catch (e) {
         goToLogin();
-        throw new Error("Проблемы с загрузкой данных о пользователе");
+        console.log("Проблемы с загрузкой данных о пользователе");
       }
     };
     const userData = await fetchUserData();
@@ -77,7 +78,7 @@ export async function createProfile() {
               }
             } catch (e) {
               goToLogin();
-              throw new Error("Не удалось  покинуть профиль");
+              console.log("Не удалось  покинуть профиль");
             }
           },
         },
@@ -93,7 +94,7 @@ export async function createProfile() {
 
       const popup = new CenterPageLayout({
         className: styles.profile_dark,
-        content: createImgPopup(goToProfile),
+        content: createImgPopup(goToProfile, changeAvatar),
       });
 
       popup.hide();
@@ -101,7 +102,7 @@ export async function createProfile() {
       const profileTemplate = new ProfileTemplate({
         ...htmlElements,
         avatarImg: userData.avatar
-          ? `https://ya-praktikum.tech/api/v2/resources${userData.avatar}`
+          ? `${BASE_URL}/resources${userData.avatar}`
           : defaultAvatarImg,
         name: userData.first_name,
         editProfileButton,
@@ -113,6 +114,10 @@ export async function createProfile() {
 
       function openChangeAvatarPopup() {
         popup.show("flex");
+      }
+
+      function changeAvatar(url: string) {
+        profileTemplate.setProps({ avatarImg: `${BASE_URL}/resources/${url}` });
       }
 
       return profileTemplate;
@@ -147,6 +152,6 @@ export async function createProfile() {
     return layout;
   } catch (e) {
     eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/400");
-    throw new Error("Не удалось загрузить профиль");
+    console.log("Не удалось загрузить профиль");
   }
 }

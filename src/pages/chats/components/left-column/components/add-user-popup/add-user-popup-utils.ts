@@ -22,7 +22,7 @@ export function createAddUserPopup(chatId: string) {
             eventBusRouter.emit(ERouterEvents.URL_CHANGE, "/messenger");
           }
         } catch (e) {
-          throw new Error("Не удалось добавить пользователя");
+          console.log("Не удалось добавить пользователя");
         }
       },
     },
@@ -46,7 +46,7 @@ export function createAddUserPopup(chatId: string) {
             usersList.setProps({ users: JSON.parse(users.responseText) });
           }
         } catch (e) {
-          throw new Error("Не удалось найти пользователей");
+          console.log("Не удалось найти пользователей");
         }
       },
     },

@@ -1,6 +1,6 @@
-import { BaseAPI, HTTPTransport } from "../../services";
+import { BASE_URL, BaseAPI, HTTPTransport } from "../../services";
 
-const chatsApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2");
+const chatsApiInstance = new HTTPTransport(BASE_URL);
 
 export class ChatsAPI extends BaseAPI {
   create(title: string) {
@@ -21,6 +21,16 @@ export class ChatsAPI extends BaseAPI {
 
   getChat(id: string) {
     return chatsApiInstance.get(`/chats/new/${id}`);
+  }
+
+  getChatUser(id: string) {
+    return chatsApiInstance.get(`/chats/${id}/users`);
+  }
+
+  removeUserFromChat(chatId: string, userId: string) {
+    return chatsApiInstance.delete(`/chats/users`, {
+      data: { users: [userId], chatId },
+    });
   }
 
   addUserToChat(chatId: string, userLogin: string) {

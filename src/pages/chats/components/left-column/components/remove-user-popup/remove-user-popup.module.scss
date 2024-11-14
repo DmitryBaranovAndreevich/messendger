@@ -1,0 +1,18 @@
+@import "../../../../../../styles/index";
+
+.popup {
+  background: #fff;
+  max-width: 300px;
+  width: 100%;
+  border-radius: 12px;
+  padding: 40px 30px;
+
+  & .exitButton {
+    margin-top: 20px;
+    background-color: $colorError;
+  }
+
+  &_dark {
+    background: $popupBackground;
+  }
+}

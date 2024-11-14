@@ -6,6 +6,7 @@ import { ERouterEvents, eventBusRouter } from "../../utils";
 import { TChats, TUser } from "./chats-types";
 import defaultImg from "../../icons/favicon.svg";
 import { getDataStr } from "./chats-constants";
+import { BASE_URL } from "../../services";
 
 const chatsApi = new ChatsAPI();
 
@@ -13,6 +14,7 @@ export async function createChatsPage() {
   try {
     const userChats = await chatsApi.request();
     const userResponse = await chatsApi.getUser();
+
     if (userChats.status !== 200 || userResponse.status !== 200) {
       throw new Error("Проблема с  загрузкой даных");
     }
@@ -24,7 +26,7 @@ export async function createChatsPage() {
               ...el,
               time: getDataStr(el.last_message.time),
               avatar: el.avatar
-                ? `https://ya-praktikum.tech/api/v2/resources${el.avatar}`
+                ? `${BASE_URL}/resources${el.avatar}`
                 : defaultImg,
               last_message: {
                 ...el.last_message,
@@ -35,12 +37,12 @@ export async function createChatsPage() {
               ...el,
               time: getDataStr(el.created_by),
               avatar: el.avatar
-                ? `https://ya-praktikum.tech/api/v2/resources${el.avatar}`
+                ? `${BASE_URL}/resources${el.avatar}`
                 : defaultImg,
             },
     );
     const contentColumn = await createRightColumn(user);
-    const chatsColumn = createLeftColumn(chats, setActiveChatId);
+    const chatsColumn = await createLeftColumn(chats, setActiveChatId);
     const chatsTemplate = new ChatsTemplate({
       chatsColumn,
       contentColumn,
@@ -53,14 +55,14 @@ export async function createChatsPage() {
     async function setActiveChatId(id: string, filter = "") {
       localStorage.setItem("activeChat", id);
       chats = chats.map((el) => {
-        if (String(el.id) === String(id)) {
+        if (String(el?.id) === String(id)) {
           return { ...el, unread_count: 0 };
         }
 
         return el;
       });
       const updateConfig = chats.map((el) => {
-        if (String(el.id) === String(id)) {
+        if (String(el?.id) === String(id)) {
           return { ...el, activeChat: styles.activeChat, unread_count: 0 };
         }
 
@@ -70,8 +72,13 @@ export async function createChatsPage() {
         user,
         updateConfig.find((el) => String(el.id) === String(id)),
       );
+      const leftColumn = await createLeftColumn(
+        updateConfig,
+        setActiveChatId,
+        filter,
+      );
       chatsTemplate.setProps({
-        chatsColumn: createLeftColumn(updateConfig, setActiveChatId, filter),
+        chatsColumn: leftColumn,
         contentColumn: rightColumn,
       });
     }

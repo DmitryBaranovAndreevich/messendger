@@ -7,13 +7,14 @@ import {
   createAddUserPopup,
   createChatPopup,
   Input,
+  removeUserPopup,
 } from "./components";
 import { LeftColumnTemplate } from "./left-column";
 import styles from "./left-column.module.scss";
 
 const chatsApi = new ChatsAPI();
 
-export function createLeftColumn(
+export async function createLeftColumn(
   chats: TChats[],
   selectId: (id: string, filter?: string) => Promise<void>,
   filter = "",
@@ -37,19 +38,23 @@ export function createLeftColumn(
                 false,
               );
             } catch (e) {
-              throw new Error("Не получилось удалить чат");
+              console.log("Не получилось удалить чат");
             }
           }
 
           if (tag === "add") {
             openAddUserPopup(chatId);
           }
+
+          if (tag === "remove") {
+            await openRemoveUserPopup(chatId);
+          }
         } else {
           if (chatId) {
             try {
               await selectId(chatId, state.filter);
             } catch (e) {
-              throw new Error("Не удалось обновить данные");
+              console.log("Не удалось обновить данные");
             }
           }
         }
@@ -104,14 +109,24 @@ export function createLeftColumn(
       },
     },
   });
+
+  const removePopup = await removeUserPopup();
+  removePopup?.hide();
+
   const leftColumn = new LeftColumnTemplate({
     linkButton,
     newChatButton,
     createChatPopup: chatPopup,
     addUserPopup,
     searchInput,
+    removeUserPopup: removePopup,
     chatsList,
   });
+
+  async function openRemoveUserPopup(chatId: string) {
+    const removePopup = await removeUserPopup(chatId);
+    leftColumn.setProps({ removeUserPopup: removePopup });
+  }
 
   function openCreateChatPopup() {
     chatPopup = createChatPopup();

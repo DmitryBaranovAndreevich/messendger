@@ -32,6 +32,7 @@ export class ChatsTitle extends Block<TChatsTitle> {
                 </div>
                 <div class="${styles.chatsTitle__control}">
                  <button data-type-button="exit" class="${styles.chatsTitle__controlButtons}">Удалить чат</button>
+                 <button data-type-button="remove" class="${styles.chatsTitle__controlButtons}">Удалить пользователя</button>
                  <button data-type-button="add" class="${styles.chatsTitle__controlButtons}">Добавить собеседника</button>
                 </div>
             </li>

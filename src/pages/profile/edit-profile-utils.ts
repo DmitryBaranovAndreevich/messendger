@@ -7,6 +7,7 @@ import { CenterPageLayout } from "../../layouts";
 import styles from "./profile.module.scss";
 import { ProfileAPI } from "./profile-api";
 import defaultAvatarImg from "../../icons/imgLoader.svg";
+import { BASE_URL } from "../../services";
 
 const profileAPIInstance = new ProfileAPI();
 
@@ -65,7 +66,7 @@ export function createEditProfileTemplate(
 
   const popup = new CenterPageLayout({
     className: styles.profile_dark,
-    content: createImgPopup(goToEditProfileTemplate),
+    content: createImgPopup(goToEditProfileTemplate, changeAvatar),
   });
 
   popup.hide();
@@ -84,7 +85,7 @@ export function createEditProfileTemplate(
     submitButton,
     changeAvatarButton,
     avatarImg: userData.avatar
-      ? `https://ya-praktikum.tech/api/v2/resources${userData.avatar}`
+      ? `${BASE_URL}/resources${userData.avatar}`
       : defaultAvatarImg,
     popup,
     events: {
@@ -108,5 +109,10 @@ export function createEditProfileTemplate(
       },
     },
   });
+
+  function changeAvatar(url: string) {
+    editProfileTemplate.setProps({ avatarImg: `${BASE_URL}/resources/${url}` });
+  }
+
   return editProfileTemplate;
 }

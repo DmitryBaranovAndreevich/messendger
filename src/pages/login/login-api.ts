@@ -1,9 +1,7 @@
-import { BaseAPI, HTTPTransport } from "../../services";
+import { BASE_URL, BaseAPI, HTTPTransport } from "../../services";
 import { TLoginUserRequest } from "./login-types";
 
-const registerApiInstance = new HTTPTransport(
-  "https://ya-praktikum.tech/api/v2",
-);
+const registerApiInstance = new HTTPTransport(BASE_URL);
 
 export class LoginAPI extends BaseAPI {
   request(user: TLoginUserRequest) {

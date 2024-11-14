@@ -9,6 +9,7 @@ export type TLeftColumnTemplate = {
   chatsList: ChatsTitle;
   createChatPopup: CenterPageLayout;
   addUserPopup: CenterPageLayout;
+  removeUserPopup?: CenterPageLayout;
 };
 
 export type TChatsData = {

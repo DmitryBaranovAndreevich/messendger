@@ -4,6 +4,7 @@ import { ImgLoader } from "./img-loader-popup";
 import { ImgName } from "./img-name";
 import styles from "./img-loader-popup.module.scss";
 import { ProfileAPI } from "../../profile-api";
+import { TUserInfo } from "../../profile-types";
 
 const profileAPIInstance = new ProfileAPI();
 
@@ -64,7 +65,10 @@ function createImgName(fileName: string, onClick: (e: Event) => void) {
   return imgName;
 }
 
-export const createImgPopup = (goToProfile: () => void) => {
+export const createImgPopup = (
+  goToProfile: () => void,
+  changeAvatar: (url: string) => void,
+) => {
   const state: { logo?: FileList } = {
     logo: undefined,
   };
@@ -104,6 +108,8 @@ export const createImgPopup = (goToProfile: () => void) => {
           const imgForm = new FormData(form);
           const response = await profileAPIInstance.editAvatar(imgForm);
           if (response?.status === 200) {
+            const user: TUserInfo = JSON.parse(response.responseText);
+            changeAvatar(user.avatar);
             loader.setProps({
               content: createImgName(files[0].name, handleOkButtonClick),
             });
@@ -123,7 +129,7 @@ export const createImgPopup = (goToProfile: () => void) => {
   }
 
   function handleOkButtonClick() {
-    loader.setProps({ content: createImgPopup(goToProfile) });
+    loader.setProps({ content: createImgPopup(goToProfile, changeAvatar) });
   }
 
   return loader;

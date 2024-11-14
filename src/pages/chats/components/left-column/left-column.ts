@@ -18,6 +18,7 @@ export class LeftColumnTemplate extends Block<TLeftColumnTemplate> {
               {{{chatsList}}}
               {{{createChatPopup}}}
               {{{addUserPopup}}}
+              {{{removeUserPopup}}}
             </div>`;
   }
 }

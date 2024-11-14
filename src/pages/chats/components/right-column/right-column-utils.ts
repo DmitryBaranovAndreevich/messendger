@@ -93,6 +93,6 @@ export async function createRightColumn(user: TUser, chatContent?: TChats) {
       content: noChatsTitle,
     });
   } catch (e) {
-    throw new Error("Не получается установить соединение");
+    console.log("Не получается установить соединение");
   }
 }

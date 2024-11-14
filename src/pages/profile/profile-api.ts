@@ -1,9 +1,7 @@
-import { BaseAPI, HTTPTransport } from "../../services";
+import { BASE_URL, BaseAPI, HTTPTransport } from "../../services";
 import { TEditPassPayload, TEditProfilePayload } from "./profile-types";
 
-const profileApiInstance = new HTTPTransport(
-  "https://ya-praktikum.tech/api/v2",
-);
+const profileApiInstance = new HTTPTransport(BASE_URL);
 
 export class ProfileAPI extends BaseAPI {
   delete() {
