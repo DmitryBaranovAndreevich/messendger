@@ -1,6 +1,5 @@
 import { Block, TPropsObj } from "../../modules";
 import { TProfileTemplate } from "./profile-types";
-import avatarImg from "../../icons/imgLoader.svg";
 import styles from "./profile.module.scss";
 
 export class ProfileTemplate extends Block<TProfileTemplate> {
@@ -10,7 +9,7 @@ export class ProfileTemplate extends Block<TProfileTemplate> {
   render() {
     return `<div class="${styles.profile}">
                 <div class="${styles.profile__imgLoader}">
-                  <img src="${avatarImg}" alt="Поменять аватар" class="${styles.profile__img}">
+                  <img src="{{{avatarImg}}}" alt="Поменять аватар" class="${styles.profile__img}">
                   {{{changeAvatarButton}}}
                 </div>
                 <p class="${styles.profile__title}">{{name}}</p>

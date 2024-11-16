@@ -7,6 +7,6 @@ export class Input extends Block<TInput> {
     super(props);
   }
   render() {
-    return `<input value="{{value}}" class="${styles.input}" {{{disabled}}} name="{{name}}" type="{{type}}"/>`
+    return `<input value="{{value}}" class="${styles.input}" {{{disabled}}} name="{{name}}" type="{{type}}"/>`;
   }
 }

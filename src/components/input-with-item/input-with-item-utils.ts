@@ -33,7 +33,9 @@ export function getInputWithItem({
         state.value = input.value;
         validateInputValue();
       },
-      input: () => {
+      input: (e) => {
+        const input = e.target as HTMLInputElement;
+        state.value = input.value;
         setError(false);
       },
     },
@@ -61,20 +63,23 @@ export function getInputWithItem({
 
   function validateInputValue() {
     if (validateFunc && validateFunc(state.value)) {
-      setError(true);
+      setError(true, error);
     } else {
       setError(false);
     }
   }
 
-  function setError(key: boolean) {
+  function setError(key: boolean, mes?: string) {
     state.isError = key;
     if (state.isError) {
+      if (mes) {
+        errorLabel.setProps({ content: mes });
+      }
       errorLabel.show();
     } else {
       errorLabel.hide();
     }
   }
 
-  return { inputWithItem, state, name, validateInputValue };
+  return { inputWithItem, state, name, validateInputValue, setError };
 }

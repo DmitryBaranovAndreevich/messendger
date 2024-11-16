@@ -6,3 +6,8 @@ export type TLoginTemplate = {
   buttonSubmit: Button;
   link: Link;
 };
+
+export type TLoginUserRequest = {
+  login: "string";
+  password: "string";
+};

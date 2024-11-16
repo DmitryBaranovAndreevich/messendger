@@ -8,11 +8,17 @@ export class LeftColumnTemplate extends Block<TLeftColumnTemplate> {
   }
   render() {
     return `<div class="${styles.leftColumn}">
+             <div class="${styles.leftColumn__links}">
+              {{{newChatButton}}}
               {{{linkButton}}}
+             </div> 
               <form>
                 {{{searchInput}}}
               </form>  
               {{{chatsList}}}
+              {{{createChatPopup}}}
+              {{{addUserPopup}}}
+              {{{removeUserPopup}}}
             </div>`;
   }
 }

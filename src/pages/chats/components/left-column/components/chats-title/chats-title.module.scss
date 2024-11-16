@@ -3,14 +3,35 @@
 .chatsTitle {
   list-style-type: none;
   display: grid;
-  grid-template-columns: 0.25fr 0.45fr 0.25fr;
-  gap: 10px;
+  grid-template-columns: 0.25fr 0.4fr 0.25fr 0.1fr;
   padding: 12px 0;
   border-top: 1px solid $lightColorDisable;
 
   &:hover {
     cursor: pointer;
     background: #e4edfd;
+  }
+
+  &__control {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    &Buttons {
+      font:
+        600 8px/8px "Inter",
+        sans-serif;
+      color: $colorPrimary;
+      border: none;
+      background: transparent;
+      outline: none;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.5;
+      }
+    }
   }
 
   &__wrapper {
@@ -31,11 +52,21 @@
     color: $textColorDark;
   }
 
+  .chatsTitle__titleWrapper {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
   &__title {
+    width: 100%;
     margin: 0;
     font:
       600 13px/13px "Inter",
       sans-serif;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   &__comment {

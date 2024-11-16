@@ -1,10 +1,10 @@
 import { Link } from "../../components";
 import { CenterPageLayout } from "../../layouts";
-import { ERouterEvents, eventBusRouter } from "../utils";
+import { ERouterEvents, eventBusRouter } from "../../utils";
 import { ErrorPageTemplate } from "./error-page";
 import styles from "./error-page.module.scss";
 
-export function createErrorPage({
+export async function createErrorPage({
   title,
   content,
 }: {
@@ -13,14 +13,14 @@ export function createErrorPage({
 }) {
   const link = new Link({
     content: "На страницу чатов",
-    url: `${window.location.origin}/chats`,
+    url: `${window.location.origin}/messenger`,
     className: styles.errorPage__link,
     events: {
       click: (e: Event) => {
         e.preventDefault();
         const a = e.target as HTMLLinkElement;
-        history.pushState({}, "", a.href);
-        eventBusRouter.emit(ERouterEvents.URL_CHANGE);
+        const url = new URL(a.href);
+        eventBusRouter.emit(ERouterEvents.URL_CHANGE, url.pathname);
       },
     },
   });

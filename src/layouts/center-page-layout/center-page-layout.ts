@@ -1,8 +1,8 @@
 import { Block, IBlock, TProps, TPropsObj } from "../../modules";
 import styles from "./center-page-layout.module.scss";
 
-type TCenterPageLayout= {
-  content: IBlock<Record<string, TProps>>;
+type TCenterPageLayout = {
+  content?: IBlock<Record<string, TProps>>;
   className?: string;
 };
 

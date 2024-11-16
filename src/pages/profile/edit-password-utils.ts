@@ -1,12 +1,20 @@
 import { changePassConfig } from "./profile-constants";
-import { TEditPasswordTemplate } from "./profile-types";
+import { TEditPasswordTemplate, TUserInfo } from "./profile-types";
 import { Button, createImgPopup, creteParams, Params } from "./components";
 import { Button as SubmitButton } from "../../components";
 import { EditPasswordTemplate } from "./edit-password";
 import styles from "./profile.module.scss";
 import { CenterPageLayout } from "../../layouts";
+import { ProfileAPI } from "./profile-api";
+import defaultAvatarImg from "../../icons/imgLoader.svg";
+import { BASE_URL } from "../../services";
 
-export function createEditPasswordTemplate(goToProfile: () => void) {
+const profileAPIInstance = new ProfileAPI();
+
+export function createEditPasswordTemplate(
+  goToProfile: () => void,
+  userData: TUserInfo,
+) {
   const params = changePassConfig.map((el) =>
     creteParams({
       errorMessage: el.errorMessage,
@@ -16,7 +24,7 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
       label: el.label,
       value: el.value,
       validateFunc: el.validateFunc,
-    })
+    }),
   );
 
   const htmlElements = params.reduce(
@@ -24,7 +32,7 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
       ...acc,
       [changePassConfig[index].name]: el.component,
     }),
-    {} as Record<keyof TEditPasswordTemplate, Params>
+    {} as Record<keyof TEditPasswordTemplate, Params>,
   );
 
   function validateForm() {
@@ -39,7 +47,7 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
         ...acc,
         [changePassConfig[index].name]: el.state.value,
       }),
-      {} as Record<keyof TEditPasswordTemplate, Params>
+      {} as Record<keyof TEditPasswordTemplate, string>,
     );
   }
 
@@ -58,7 +66,7 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
 
   const popup = new CenterPageLayout({
     className: styles.profile_dark,
-    content: createImgPopup(goToEditPassTemplate),
+    content: createImgPopup(goToEditPassTemplate, changeAvatar),
   });
 
   popup.hide();
@@ -68,25 +76,55 @@ export function createEditPasswordTemplate(goToProfile: () => void) {
   }
 
   function goToEditPassTemplate() {
-    popup.hide()
+    popup.hide();
   }
 
   const editProfileTemplate = new EditPasswordTemplate({
     ...htmlElements,
     submitButton,
     changeAvatarButton,
+    avatarImg: userData.avatar
+      ? `${BASE_URL}/resources${userData.avatar}`
+      : defaultAvatarImg,
     popup,
     events: {
-      submit: (e) => {
-        e.preventDefault();
-        const isValid = validateForm();
-        if (isValid) {
-          const values = getFormValues();
-          console.log(values);
-          goToProfile();
+      submit: async (e) => {
+        try {
+          e.preventDefault();
+          const isValid = validateForm();
+          const password = params.find((el) => el.name === "password");
+          const repeatPasssword = params.find(
+            (el) => el.name === "repeat_newPass",
+          );
+          if (isValid) {
+            const { oldPass, newPass, repeat_newPass } = getFormValues();
+            if (newPass !== repeat_newPass) {
+              password?.showError("Пароли не совпадают");
+              repeatPasssword?.showError("Пароли не совпадают");
+              return;
+            }
+
+            const response = await profileAPIInstance.editPass({
+              oldPassword: oldPass,
+              newPassword: newPass,
+            });
+            if (response.status === 200) {
+              goToProfile();
+            } else {
+              repeatPasssword?.showError(response.responseText);
+            }
+          }
+        } catch (e) {
+          console.log("Проблемы с редактированием профиля");
         }
       },
     },
   });
+
+  function changeAvatar(url: string) {
+    editProfileTemplate.setProps({ avatarImg: `${BASE_URL}/resources/${url}` });
+  }
+
   return editProfileTemplate;
 }
+// { oldPass: "Qwerty12", newPass: "Qwerty34", repeat_newPass: "Qwerty34" }

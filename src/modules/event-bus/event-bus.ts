@@ -1,7 +1,9 @@
 import { TCallBack } from "../../types";
 import { IEventBus } from "./event-bus-types";
 
-export class EventBus<T extends string | number | symbol> implements IEventBus<T> {
+export class EventBus<T extends string | number | symbol>
+  implements IEventBus<T>
+{
   listeners: IEventBus<T>["listeners"] = {};
   constructor() {}
 
@@ -19,7 +21,7 @@ export class EventBus<T extends string | number | symbol> implements IEventBus<T
     }
 
     this.listeners[event] = this.listeners[event].filter(
-      (listener) => listener !== callback
+      (listener) => listener !== callback,
     );
   }
 
