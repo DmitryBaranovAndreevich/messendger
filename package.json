@@ -13,18 +13,23 @@
     "prettier": "prettier --write src/**/*.ts",
     "eslint": "eslint",
     "stylelint": "stylelint \"**/*.scss\"",
-    "lint": "npm run eslint && npm run stylelint"
-
+    "lint": "npm run eslint && npm run stylelint",
+    "test": "mocha src/**/*.spec.ts"
   },
   "devDependencies": {
+    "@types/chai": "^5.0.1",
+    "@types/mocha": "^10.0.9",
     "@types/uuid": "^10.0.0",
+    "chai": "*",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.11.0",
+    "mocha": "*",
     "prettier": "^3.3.3",
     "stylelint": "^16.10.0",
     "stylelint-config-standard-scss": "^13.1.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.11.0",
     "vite": "^5.4.1"
