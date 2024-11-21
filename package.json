@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.9",
+    "@types/sinon": "^17.0.3",
     "@types/uuid": "^10.0.0",
     "chai": "*",
     "eslint": "^9.13.0",
@@ -27,6 +28,7 @@
     "globals": "^15.11.0",
     "mocha": "*",
     "prettier": "^3.3.3",
+    "sinon": "^19.0.2",
     "stylelint": "^16.10.0",
     "stylelint-config-standard-scss": "^13.1.0",
     "tsx": "^4.19.2",
