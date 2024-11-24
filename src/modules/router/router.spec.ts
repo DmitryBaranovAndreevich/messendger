@@ -6,7 +6,7 @@ import { ProtectedRoute } from "./protectedRoute";
 import { eraseCookie, eventBusRouter, setCookie } from "../../utils";
 import { isEqual } from "./router-utils";
 
-describe("Проверяем работу сервиса отправки запросов", () => {
+describe("Проверяем работу роутера", () => {
   const thisWindow = global.window;
   const thisDocument = global.document;
   before(function () {
