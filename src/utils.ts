@@ -83,9 +83,12 @@ export function setCookie(name: string, value: string, props: TProps) {
   document.cookie = updatedCookie;
 }
 
+
 export function eraseCookie(name: string) {
   document.cookie = name + "=; Max-Age=-99999999;";
 }
+
+export const test = () => {}
 
 export function getCookie(name: string) {
   const matches = document.cookie.match(
