@@ -8,6 +8,6 @@ export type TLoginTemplate = {
 };
 
 export type TLoginUserRequest = {
-  login: "string";
-  password: "string";
+  login: string;
+  password: string;
 };
